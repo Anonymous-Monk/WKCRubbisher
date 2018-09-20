@@ -14,18 +14,20 @@ int main(int argc, const char * argv[]) {
     @autoreleasepool {
         
         
-        SLCMixManager *mix = [SLCMixManager new];
-//        mix.fileHeader = @"SQZ"; //header
-//        mix.fileName = @"QuizProject"; //文件夹名称
-//        mix.fileNum = 150; //文件个数
-        [mix fireOnBorn];
-        
-        
 //        SLCMixManager *mix = [SLCMixManager new];
-//        mix.childFullPath = @"/Users/weikunchao/Desktop/aa";
+////        mix.fileHeader = @"SQZ"; //header
+////        mix.fileName = @"QuizProject"; //文件夹名称
+////        mix.fileNum = 150; //文件个数
+//        mix.projectType = SLCMixProjectTypeSwift;
+//        [mix fireOnBorn];
+        
+        
+        SLCMixManager *mix = [SLCMixManager new];
+        mix.childFullPath = @"/Users/weikunchao/Desktop/aaaaaa";
 //        mix.contaisArray = @[@"SLCmixLayout"];
-//        mix.childMethodNum = 10;
-//        [mix fireOnChild];
+        mix.childMethodNum = 10;
+        mix.projectType = SLCMixProjectTypeSwift;
+        [mix fireOnChild];
 
     }
     return 0;

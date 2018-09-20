@@ -11,6 +11,8 @@
 
 @interface SLCMixManager()
 
+@property (nonatomic, copy) NSString * mixedBody;
+@property (nonatomic, copy) NSString * tailS;
 @property (nonatomic, assign) NSUInteger randomBodyNum; //body随机数
 @property (nonatomic, assign) NSUInteger randomTailNum; //tail随机数
 @property (nonatomic, copy) NSString *bodyString; //body字符串
@@ -22,43 +24,51 @@
 
 @implementation SLCMixManager
 
-- (instancetype)init {
+- (instancetype)init
+{
     if (self = [super init]) {
         self.fileNum = 120;
         self.fileName = @"mixProject";
         self.fullPath = [self defaultFullPath];
         self.fileHeader = @"SLC";
         self.classArray = [NSMutableArray array];
+        self.projectType = SLCMixProjectTypeObjectC;
     }
     return self;
 }
 
 #pragma mark ------<fireOnBorn>-----
 
-- (void)setFileName:(NSString *)fileName {
+- (void)setFileName:(NSString *)fileName
+{
     _fileName = fileName;
     self.fullPath = [self defaultFullPath];
 }
 
-- (void)fireOnBorn {
-    
+- (void)fireOnBorn
+{
     BOOL isCreateDirectory = [self createDirectory];
     dispatch_semaphore_t semaphore = GCD_Semaphore(1);
     if (isCreateDirectory) {
         GCD_Lock(semaphore);
         for (NSInteger i = 0; i < self.fileNum; i ++) { //垃圾文件
-            [self createFile];
+            if (self.projectType == SLCMixProjectTypeObjectC) {
+                [self createFile];
+            }else {
+                [self createSwiftFile];
+            }
             GCD_Unlock(semaphore);
         }
-        
-        [self createBulletsFile];
+        if (self.projectType == SLCMixProjectTypeObjectC) {
+            [self createBulletsFile];
+        }
         NSLog(@"====%ld组文件创建完成",self.fileNum);
     }
 }
 
 #pragma mark ---<PrivateMethod>---
-
-- (void)createBulletsFile {
+- (void)createBulletsFile
+{
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSString *fileName = [NSString stringWithFormat:@"%@Bullets",self.fileHeader];
     NSString *filePath = [self.fullPath stringByAppendingPathComponent:fileName];
@@ -80,7 +90,8 @@
 }
 
 - (NSString *)createBulletsM:(NSString *)fileName
-                methodString:(NSString *)method {
+                methodString:(NSString *)method
+{
     
     NSString *bulletsM = [NSString stringWithFormat:@"\n\n\n\n\n#import \"%@.h\"\n#import <objc/runtime.h>\n@interface %@()\n@property (nonatomic, strong) NSArray <NSString *>* classArray;\n@end\n\n\n@implementation %@\n",fileName,fileName,fileName];
     
@@ -112,10 +123,12 @@
     return bulletsM;
 }
 
-- (void)createFile {
+- (void)createFile
+{
     NSFileManager *fileManager = [NSFileManager defaultManager];
     
     NSString *file = [NSString stringWithFormat:@"%@%@%@",self.fileHeader,self.bodyString,self.tailString];
+    
     NSString *filePath = [self.fullPath stringByAppendingPathComponent:file];
     [self.classArray addObject:file];
     
@@ -155,7 +168,8 @@
 }
 
 //随机变量
-- (NSString *)randomProperty {
+- (NSString *)randomProperty
+{
     NSUInteger randomNum = arc4random() % 6;
     if (randomNum == 0) return @"\n";
     NSString *property = @"\n";
@@ -167,7 +181,8 @@
 }
 
 //随机一个变量
-- (NSString *)randomPerProperty {
+- (NSString *)randomPerProperty
+{
     NSString *propertyName = [NSString stringWithFormat:@"%@%@",bodyArray()[self.randomBodyNum],[self randomChar]];
     NSArray <NSString *>*propertyArray = @[
                                            @"\n",
@@ -182,7 +197,8 @@
 }
 
 //随机方法
-- (void)randomMethod:(void(^)(NSArray <NSString *>*methodArray))handle {
+- (void)randomMethod:(void(^)(NSArray <NSString *>*methodArray))handle
+{
     NSUInteger randomNum = 1 + arc4random() % 6;
     NSMutableArray *array = [NSMutableArray array];
     for (NSInteger i = 0; i < randomNum; i ++) {
@@ -193,12 +209,14 @@
 }
 
 //随机一个方法
-- (NSString *)randomPerMethod {
+- (NSString *)randomPerMethod
+{
     NSUInteger randomNum = arc4random() % 4;
     return [self recursiveMethod:randomNum];
 }
 
-- (NSString *)recursiveMethod:(NSInteger)times {
+- (NSString *)recursiveMethod:(NSInteger)times
+{
     if (times == 0) {
         NSString *methodName = bodyArray()[self.randomBodyNum];
         return [NSString stringWithFormat:@"- (void)%@;",methodName];
@@ -221,7 +239,8 @@
     }
 }
 
-- (BOOL)createDirectory {
+- (BOOL)createDirectory
+{
     NSFileManager *fileManager = [NSFileManager defaultManager];
     BOOL create = [fileManager createDirectoryAtPath:self.fullPath withIntermediateDirectories:YES attributes:nil error:nil];
     if (create) {
@@ -232,46 +251,58 @@
     return create;
 }
 
-- (NSString *)defaultFullPath {
+- (NSString *)defaultFullPath
+{
     NSString *desk = [NSSearchPathForDirectoriesInDomains(NSDesktopDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     return  [desk stringByAppendingPathComponent:self.fileName];
 }
 
-- (NSString *)bodyString {
-    NSString *body = self.mixedBody && self.mixedBody.length != 0 ? self.mixedBody : bodyArray()[self.randomBodyNum];
+- (NSString *)bodyString
+{
+    NSString *body = (self.mixedBody && self.mixedBody.length != 0) ? self.mixedBody : bodyArray()[self.randomBodyNum];
     return body;
 }
 
-- (NSString *)tailString {
-    NSString *tail = self.tailS && self.tailS.length != 0 ? self.tailS : tailArray()[self.randomTailNum];
+- (NSString *)tailString
+{
+    NSString *tail = (self.tailS && self.tailS.length != 0) ? self.tailS : tailArray()[self.randomTailNum];
     return tail;
 }
 
-- (NSUInteger)randomBodyNum {
+- (NSUInteger)randomBodyNum
+{
     return arc4random() % (int)(bodyArray().count - 1);
 }
 
-- (NSUInteger)randomTailNum {
+- (NSUInteger)randomTailNum
+{
     return arc4random() % (int)(tailArray().count - 1);
 }
 
 //随机一个字母
-- (NSString *)randomChar {
+- (NSString *)randomChar
+{
     NSArray *array = @[@"a",@"b",@"c",@"d",@"e",@"f",@"g",@"h",@"i",@"g",@"k",@"l",@"m",@"n",@"o",@"p",@"q",@"r",@"s",@"t",@"u",@"v",@"w",@"x",@"y",@"z"];
    NSUInteger randomNum = arc4random() % 25;
     return array[randomNum];
 }
 
 //删除最后一个字符
-- (NSString*)removeLastOneChar:(NSString*)origin {
+- (NSString*)removeLastOneChar:(NSString*)origin
+{
     NSString* cutted = [origin length] > 0 ? [origin substringToIndex:([origin length]-1)] : origin;
     return cutted;
 }
 
 
-#pragma mark ------<fireOnChild>------
 
-- (void)fireOnChild {
+
+
+//***************************************************************
+//***************************************************************
+#pragma mark ------<fireOnChild>------
+- (void)fireOnChild
+{
     NSString *directory = [self fileExist];
     if (!directory || directory.length == 0) {
         NSLog(@"error:目录不存在");
@@ -281,11 +312,19 @@
             if (self.contaisArray && self.contaisArray.count != 0) { //指定
                 for (NSString *string in self.contaisArray) {
                     if ([dir containsString:string]) {
-                         [self handlePathWithDirectory:dir];
+                        if (self.projectType == SLCMixProjectTypeObjectC) {
+                             [self handlePathWithDirectory:dir];
+                        }else {
+                            [self swiftHandlePathWithDirectory:dir];
+                        }
                     }
                 }
             }else { //不指定
-                [self handlePathWithDirectory:dir];
+                if (self.projectType == SLCMixProjectTypeObjectC) {
+                    [self handlePathWithDirectory:dir];
+                }else {
+                    [self swiftHandlePathWithDirectory:dir];
+                }
             }
         }];
     }
@@ -293,12 +332,11 @@
 
 
 - (void)forwardAllFiles:(NSString *)directory
-                 handle:(void(^)(NSString *dir))handle {
+                 handle:(void(^)(NSString *dir))handle
+{
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSDirectoryEnumerator *dirEnumrator = [fileManager enumeratorAtPath:directory];
-    
     while ((directory = [dirEnumrator nextObject]) != nil) {
-        
         if (![directory containsString:@"."]) continue;
         if (![directory containsString:@"/"]) continue;
         if ([directory containsString:@".xcassets"]) continue;
@@ -328,13 +366,16 @@
         if ([directory containsString:@".mp4"]) continue;
         if ([directory containsString:@".pch"]) continue;
         if ([directory containsString:@".mov"]) continue;
+        if ([directory containsString:@"Tests.swift"]) continue;
         
         if (handle) handle(directory);
     }
 
 }
 
-- (void)handlePathWithDirectory:(NSString *)directory {
+- (void)handlePathWithDirectory:(NSString *)directory
+{
+    if ([directory containsString:@".swift"]) return; //去掉.swift
     if ([directory containsString:@".h"]) return; //去掉.h
     
     NSString *fileMName = [directory lastPathComponent];
@@ -360,7 +401,8 @@
 }
 
 - (void)HfileHandleWithPath:(NSString *)path
-                methodArray:(NSArray <NSString *>*)array {
+                methodArray:(NSArray <NSString *>*)array
+{
     NSFileHandle *writeHandle = [NSFileHandle fileHandleForWritingAtPath:path]; //写入
     NSFileHandle *readHandle = [NSFileHandle fileHandleForReadingAtPath:path]; //读取
     
@@ -387,8 +429,8 @@
 }
 
 - (void)MfileHandleWithPath:(NSString *)path
-                     handle:(void(^)(NSArray <NSString *>*methodArray))handle {
-    
+                     handle:(void(^)(NSArray <NSString *>*methodArray))handle
+{
     NSFileHandle *writeHandle = [NSFileHandle fileHandleForWritingAtPath:path]; //写入
     NSFileHandle *readHandle = [NSFileHandle fileHandleForReadingAtPath:path]; //读取
     
@@ -423,11 +465,192 @@
 }
 
 //不存在返回空
-- (NSString *)fileExist {
+- (NSString *)fileExist
+{
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSString *backPath = [fileManager fileExistsAtPath:self.childFullPath] ? self.childFullPath : nil;
     return backPath;
 }
 
+
+
+
+
+
+//***************************************************************
+//***************************************************************
+#pragma mark -SwiftBorn
+
+- (void)createSwiftFile
+{
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    NSString *file = [NSString stringWithFormat:@"%@%@%@",self.fileHeader,self.bodyString,self.tailString];
+    
+    NSString *filePath = [self.fullPath stringByAppendingPathComponent:file];
+    [self.classArray addObject:file];
+    
+    BOOL isFileExists = [fileManager fileExistsAtPath:[NSString stringWithFormat:@"%@.swift",filePath]];
+    if (isFileExists) return; //文件已存在,立即停止
+    
+    __block NSString *string = [NSString stringWithFormat:@"\n\n\n\n\nimport Foundation\nimport UIKit\n\n\n\nclass %@ : NSObject\n{%@",file,[self randomSwiftProperty]]; //文件内容
+    
+    string = [string stringByAppendingString:@"\n"];
+    
+    void(^handle)(NSArray <NSString *>*methodArray) = ^(NSArray <NSString *>*methodArray){
+        [methodArray enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            string = [NSString stringWithFormat:@"%@\n%@",string,obj];
+        }];
+    };
+    [self randomSwiftMethod:handle];
+    
+    string = [string stringByAppendingString:@"\n}"];
+    
+    BOOL isCreateSwift = [fileManager createFileAtPath:[NSString stringWithFormat:@"%@.swift",filePath] contents:[string dataUsingEncoding:NSUTF8StringEncoding] attributes:nil];
+    
+    if (isCreateSwift) {
+        NSLog(@"%@___文件创建成功!",file);
+    }else {
+        NSLog(@"%@文件创建失败,重名了!",file);
+    }
+}
+
+//随机变量
+- (NSString *)randomSwiftProperty
+{
+    NSUInteger randomNum = arc4random() % 6;
+    if (randomNum == 0) return @"\n";
+    NSString *property = @"\n";
+    for (NSInteger i = 0; i < randomNum; i ++) {
+        if ([property containsString:[self randomSwiftPerProperty]]) continue; //如果有,跳过
+        property = [NSString stringWithFormat:@"%@\n%@",property,[self randomSwiftPerProperty]];
+    }
+    return property;
+}
+
+//随机一个变量
+- (NSString *)randomSwiftPerProperty
+{
+    NSString *propertyName = [NSString stringWithFormat:@"%@%@",bodyArray()[self.randomBodyNum],[self randomChar]];
+    NSArray <NSString *>*propertyArray = @[
+                                           [NSString stringWithFormat:@"\t\tprivate var %@: Bool?",propertyName],
+                                           [NSString stringWithFormat:@"\t\tprivate var %@: Int?",propertyName],
+                                           [NSString stringWithFormat:@"\t\tprivate var %@: String?",propertyName],
+                                           [NSString stringWithFormat:@"\t\tprivate var %@: Array<String>?",propertyName],
+                                           [NSString stringWithFormat:@"\t\tprivate var %@: Dictionary<String,Int>?",propertyName],
+                                           ];
+    NSUInteger randomNum = arc4random() % 5;
+    return propertyArray[randomNum];
+}
+
+- (void)randomSwiftMethod:(void(^)(NSArray <NSString *>*methodArray))handle
+{
+    NSUInteger randomNum = 1 + arc4random() % 6;
+    NSMutableArray *array = [NSMutableArray array];
+    for (NSInteger i = 0; i < randomNum; i ++) {
+        NSString *methodString = [self randomPerSwiftMethod];
+        [array addObject:methodString];
+    }
+    if (handle) handle(array);
+}
+
+
+- (NSString *)randomPerSwiftMethod
+{
+    NSUInteger randomNum = arc4random() % 4;
+    return [self recursiveSwiftMethod:randomNum];
+}
+
+- (NSString *)recursiveSwiftMethod:(NSInteger)times
+{
+    if (times == 0) {
+        NSString *methodName = bodyArray()[self.randomBodyNum];
+        return [NSString stringWithFormat:@"\t\tprivate func %@ ()\n\t\t{\n\t\t\tfor i in 0..<10 {\n\t\t\t\tvar str: String = \"func name is %@\"\n\t\t\t\tstr.append(\"time is \\(i)\")\n\t\t\t\tprint(str)\n\t\t\t}\n\t\t}\n",methodName,methodName];
+    }else {
+         NSString *methodName = bodyArray()[self.randomBodyNum];
+         NSString *parameter = bodyArray()[self.randomBodyNum];
+         NSUInteger randomM = arc4random() % 4;
+        if ((randomM % 2) == 0) {
+            parameter = [NSString stringWithFormat:@"_ %@: %@",parameter,swiftTypesArray()[randomM]];
+        }else {
+            parameter = [NSString stringWithFormat:@"%@ %@: %@",[parameter substringWithRange:NSMakeRange(0, 2)],parameter,swiftTypesArray()[randomM]];
+        }
+        for (NSInteger i = 0; i < times; i ++ ) {
+            NSString *newParameter = bodyArray()[self.randomBodyNum];
+            NSUInteger randomS = arc4random() % 4;
+            if ((randomS % 2) == 0) {
+                newParameter = [NSString stringWithFormat:@", _ %@: %@",newParameter,swiftTypesArray()[randomS]];
+            }else {
+                newParameter = [NSString stringWithFormat:@", %@ %@: %@",[newParameter substringWithRange:NSMakeRange(0, 2)],newParameter,swiftTypesArray()[randomS]];
+            }
+            if (![parameter containsString:newParameter]) {
+                parameter = [NSString stringWithFormat:@"%@ %@",parameter,newParameter];
+            }else {
+                break;
+            }
+        }
+        return [NSString stringWithFormat:@"\t\tprivate func %@ (%@)\n\t\t{\n\t\t\tfor i in 0..<10 {\n\t\t\t\tvar str: String = \"func name is %@\"\n\t\t\t\tstr.append(\"time is \\(i)\")\n\t\t\t\tprint(str)\n\t\t\t}\n\t\t}\n",methodName,parameter,methodName];
+    }
+}
+
+
+
+
+//***************************************************************
+//***************************************************************
+#pragma mark -SwiftChild
+- (void)swiftHandlePathWithDirectory:(NSString *)dir
+{
+    if ([dir containsString:@".h"]) return; //去掉.h
+    if ([dir containsString:@".m"]) return; //去掉.m
+    
+    NSString *fileName = dir.lastPathComponent;
+   __block NSString *path = [self.childFullPath stringByAppendingPathComponent:dir];
+    NSString *fullPath = [self fileExist] ?:nil;
+    
+    [self forwardAllFiles:fullPath handle:^(NSString *dir) {
+        if ([dir containsString:fileName]) {
+            path = [NSString stringWithFormat:@"%@/%@",self.childFullPath,dir];
+        }
+    }];
+    
+    [self swiftFileHandleWithPath:path];
+    
+     NSLog(@"%@文件写入成功\n",fileName);
+}
+
+
+- (void)swiftFileHandleWithPath:(NSString *)path
+{
+    NSFileHandle *writeHandle = [NSFileHandle fileHandleForWritingAtPath:path]; //写入
+    NSFileHandle *readHandle = [NSFileHandle fileHandleForReadingAtPath:path]; //读取
+    
+    NSData *readData = [readHandle readDataToEndOfFile]; //读取所有内容
+    NSString *readString = [[NSString alloc] initWithData:readData encoding:NSUTF8StringEncoding]; //文件原内容
+    
+    NSInteger end = [writeHandle seekToEndOfFile];
+    NSInteger num = self.childTailPosition != 0 ? self.childTailPosition : 3;
+    [writeHandle seekToFileOffset:end - num];
+    
+    NSUInteger randomNum = self.childMethodNum != 0 ? self.childMethodNum : 1 + arc4random() % 6;
+    NSString * newString = @"\n\n\n\n\n//*********************************************\n//这里是添加的垃圾方法//*********************************************";
+    NSMutableArray *methodArray = [NSMutableArray array];
+    for (NSInteger i = 0; i < randomNum; i ++) {
+        NSString *methodString = [self randomPerSwiftMethod];
+        if ([readString containsString:methodString]) continue; //原文件如果有,跳过
+        if ([newString containsString:methodString]) continue; //新生成的如果有,跳过
+            [methodArray addObject:methodString];
+        
+        newString = [newString stringByAppendingString:[NSString stringWithFormat:@"\n%@",methodString]];
+    }
+    
+    newString = [newString stringByAppendingString:@"\n}"];
+    NSData *data = [newString dataUsingEncoding:NSUTF8StringEncoding];
+    [writeHandle writeData:data]; //写入数据
+    
+    [readHandle closeFile]; //关闭读
+    [writeHandle closeFile]; //关闭写
+
+}
 
 @end

@@ -28,42 +28,78 @@ dispatch_semaphore_wait(lock, DISPATCH_TIME_FOREVER);
 dispatch_semaphore_signal(lock);
 #endif
 
+typedef NS_ENUM(NSInteger,SLCMixProjectType) {
+    /**OC*/
+    SLCMixProjectTypeObjectC = 0,
+    /**Swift*/
+    SLCMixProjectTypeSwift
+};
+
 @interface SLCMixManager : NSObject
 
-#pragma mark ---<只对fireOnBorn有效>---
-/**header字符串 -默认SLC*/
+/**
+ 要生成的文件语言 - OC、Swift - 默认OC
+ */
+@property (nonatomic, assign) SLCMixProjectType projectType;
+
+#pragma mark ---<只对fireOnBorn有效>---  生成垃圾文件和属性及方法
+/**
+ 文件前缀 - 默认SLC
+ */
 @property (nonatomic, copy) NSString * fileHeader;
-/**body字符串 - 不给随机*/
-@property (nonatomic, copy) NSString * mixedBody;
-/**尾部统一字符串 - 不给随机*/
-@property (nonatomic, copy) NSString * tailS;
-/**文件夹名称 - 默认mixedProject*/
+
+/**
+ 生成的文件夹名称 - 默认mixedProject
+ */
 @property (nonatomic, copy) NSString * fileName;
-/**目的路径 - 默认桌面*/
+
+/**
+ 文件生成的目的路径 - 默认桌面
+ */
 @property (nonatomic, copy) NSString * fullPath;
-/**多少组文件 - 默认120*/
+
+/**
+ 文件个数 - 默认120(OC h,m 算一个文件)
+ */
 @property (nonatomic, assign) NSInteger fileNum;
 
 
 
-#pragma mark ---<只对fireOnChild有效>---
+#pragma mark ---<只对fireOnChild有效>--- 在已有文件生成垃圾方法
 /**
  * 默认不处理包含@".xcassets"、@".xcworkspace"、@".xcodeproj"、@".framework"、@".lproj"、@"main"、@"AppDelegate"、@".plist"、@".json"、@".zip"、@".storyboard"、@"Podfile"、@"Pods"、@".zip"、@"README"、@".git"、 @".gitignore"、@".DS_Store"、@".png"、@".jpg"、@".data"、@".bin"、@".mko"、@".txt"、@".mp4"、@".pch"、@".mov" 如有其它可更改和添加.
  */
 
-/**文件路径*/
+
+/**
+ 工程全路径
+ */
 @property (nonatomic, copy) NSString * childFullPath;
-/**需要生成的方法个数 - 不指定随机(1 - 6)*/
+
+/**
+ 要生成的随机方法的个数 - 默认 1-6个u随机
+ */
 @property (nonatomic, assign) NSUInteger childMethodNum;
-/**距离最末端@end位置处添加 - 一个数代表一个字母 - 不设置默认在最结尾处(@end上边)*/
+
+/**
+ 指定方法生成时,末端位置
+ */
 @property (nonatomic, assign) NSUInteger childTailPosition;
-/**指定的包含某些字符串的特殊类 - 不设不处理*/
+
+/**
+ 指定处理特定文件名的文件 - 不设全处理
+ */
 @property (nonatomic, strong) NSArray <NSString *>* contaisArray;
 
-#pragma mark ---<调用方法>---
 
-/**生成垃圾文件和函数*/
+/**
+ 生成垃圾文件、属性和方法
+ */
 - (void)fireOnBorn;
-/**在已有文件生成垃圾函数*/
+
+/**
+ 再已经文件生成垃圾方法
+ */
 - (void)fireOnChild;
+
 @end

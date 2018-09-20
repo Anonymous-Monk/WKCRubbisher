@@ -1597,3 +1597,12 @@ static NSArray <NSString *>*typesArray() {
              @"NSDictionary *_Nullable"
              ];
 }
+
+static NSArray <NSString *>*swiftTypesArray() {
+    return @[
+             @"Bool",
+             @"Int",
+             @"Array<String>",
+             @"Dictionary<String,Int>"
+             ];
+}
