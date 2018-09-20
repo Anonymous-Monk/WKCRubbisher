@@ -16,8 +16,8 @@ require 'xcodeproj'
 
 
 
-$file_full_path = "/Users/weikunchao/Desktop/sssss"
-$group_main = "sssss"
+$file_full_path = "/Users/weikunchao/Desktop/ffff"
+$group_main = "ffff"
 $file_header_old = "SQZ"
 $file_header_new = "SHM"
 $is_rename_inside = true

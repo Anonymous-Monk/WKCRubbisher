@@ -42,7 +42,7 @@ mix.childMethodNum = 10;
 
 ### 版本 1.1 添加了swift的混淆代码和函数.
 
-### 版本 1.2 添加SLCRename - 文件前缀重命名
+### 版本 1.2 添加SLCRename - 文件前缀重命名(OC或swift均可以)
 
 #### 原理
 
@@ -83,4 +83,4 @@ $target = $project.targets.first # 目标target
 ```
 2. 运行
 `$ cd  脚本所在目录`
-`$ ruby RenameClassOC.rb` 或者 `$ ruby RenameClassSwift.rb`
+`$ ruby RenameClass.rb` 
