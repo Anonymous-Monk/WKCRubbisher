@@ -1341,7 +1341,6 @@ static NSArray <NSString *>*bodyArray() {
              @"forever",
              @"impress",
              @"nobody",
-             @"repeat",
              @"round",
              @"sing",
              @"slide",

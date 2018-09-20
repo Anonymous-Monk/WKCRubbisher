@@ -367,6 +367,8 @@
         if ([directory containsString:@".pch"]) continue;
         if ([directory containsString:@".mov"]) continue;
         if ([directory containsString:@"Tests.swift"]) continue;
+        if ([directory containsString:@"Tests.h"]) continue;
+        if ([directory containsString:@"Tests.m"]) continue;
         
         if (handle) handle(directory);
     }
@@ -377,59 +379,15 @@
 {
     if ([directory containsString:@".swift"]) return; //去掉.swift
     if ([directory containsString:@".h"]) return; //去掉.h
-    
     NSString *fileMName = [directory lastPathComponent];
-    NSString *fileHName = [[self removeLastOneChar:fileMName] stringByAppendingString:@"h"];
-    
-   __block NSString *hPath = @"\n";
     NSString *mPath = [NSString stringWithFormat:@"%@/%@",self.childFullPath,directory];
-   
-    NSString *fullPath = [self fileExist] ?:nil;
-    [self forwardAllFiles:fullPath handle:^(NSString *dir) {
-        if ([dir containsString:fileHName]) {
-            hPath = [NSString stringWithFormat:@"%@/%@",self.childFullPath,dir];
-        }
-    }];
+    [self MfileHandleWithPath:mPath];
     
-    void(^handle)(NSArray <NSString *>*methodArray) = ^(NSArray <NSString *>*methodArray){
-        [self HfileHandleWithPath:hPath methodArray:methodArray];
-    };
-        [self MfileHandleWithPath:mPath handle:handle];
+    NSLog(@"%@写入成功",fileMName);
     
-    NSLog(@"%@写入成功\n%@写入成功",fileMName,fileHName);
-    
-}
-
-- (void)HfileHandleWithPath:(NSString *)path
-                methodArray:(NSArray <NSString *>*)array
-{
-    NSFileHandle *writeHandle = [NSFileHandle fileHandleForWritingAtPath:path]; //写入
-    NSFileHandle *readHandle = [NSFileHandle fileHandleForReadingAtPath:path]; //读取
-    
-    NSData *readData = [readHandle readDataToEndOfFile]; //读取所有内容
-    NSString *readString = [[NSString alloc] initWithData:readData encoding:NSUTF8StringEncoding]; //文件原内容
-    
-     NSInteger end = [writeHandle seekToEndOfFile];
-    
-    NSInteger num = self.childTailPosition != 0 ? self.childTailPosition : 5;
-    [writeHandle seekToFileOffset:end - num];
-    
-    NSString *hString = @"\n";
-    for (NSString *method in array) {
-        if ([readString containsString:method]) continue; //原文件有,跳过
-        hString = [hString stringByAppendingString:[NSString stringWithFormat:@"\n%@\n",method]];
-    }
-    hString = [hString stringByAppendingString:@"\n@end"];
-    
-    NSData *data = [hString dataUsingEncoding:NSUTF8StringEncoding];
-    [writeHandle writeData:data]; //写入数据
-    
-    [readHandle closeFile]; //关闭读
-    [writeHandle closeFile]; //关闭写
 }
 
 - (void)MfileHandleWithPath:(NSString *)path
-                     handle:(void(^)(NSArray <NSString *>*methodArray))handle
 {
     NSFileHandle *writeHandle = [NSFileHandle fileHandleForWritingAtPath:path]; //写入
     NSFileHandle *readHandle = [NSFileHandle fileHandleForReadingAtPath:path]; //读取
@@ -438,18 +396,15 @@
     NSString *readString = [[NSString alloc] initWithData:readData encoding:NSUTF8StringEncoding]; //文件原内容
     
     NSInteger end = [writeHandle seekToEndOfFile];
-    NSInteger num = self.childTailPosition != 0 ? self.childTailPosition : 5;
+    NSInteger num = self.childTailPosition != 0 ? self.childTailPosition : 6;
     [writeHandle seekToFileOffset:end - num];
 
     NSUInteger randomNum = self.childMethodNum != 0 ? self.childMethodNum : 1 + arc4random() % 6;
-    NSString * mString = @"\n";
-    NSMutableArray *methodArray = [NSMutableArray array];
+    NSString * mString = @"\n\n\n\n\n//*********************************************\n//这里是添加的垃圾方法//*********************************************";
     for (NSInteger i = 0; i < randomNum; i ++) {
         NSString *methodString = [self randomPerMethod];
         if ([readString containsString:methodString]) continue; //原文件如果有,跳过
         if ([mString containsString:methodString]) continue; //新生成的如果有,跳过
-        [methodArray addObject:methodString];
-        
         mString = [mString stringByAppendingString:[NSString stringWithFormat:@"\n\n%@",[self removeLastOneChar:methodString]]];
         mString = [mString stringByAppendingString:[NSString stringWithFormat:@"\n{\n      for (NSInteger i = 0; i < 3; i++) {\n        NSString *str = @\"func name = %@\";\n        [str stringByAppendingString:@\"time is 3\"];\n       }\n}\n",methodString]];
     }
@@ -460,8 +415,6 @@
     
     [readHandle closeFile]; //关闭读
     [writeHandle closeFile]; //关闭写
-    
-    if (handle) handle(methodArray);
 }
 
 //不存在返回空
@@ -605,15 +558,8 @@
     if ([dir containsString:@".m"]) return; //去掉.m
     
     NSString *fileName = dir.lastPathComponent;
-   __block NSString *path = [self.childFullPath stringByAppendingPathComponent:dir];
-    NSString *fullPath = [self fileExist] ?:nil;
-    
-    [self forwardAllFiles:fullPath handle:^(NSString *dir) {
-        if ([dir containsString:fileName]) {
-            path = [NSString stringWithFormat:@"%@/%@",self.childFullPath,dir];
-        }
-    }];
-    
+    NSString *path = [self.childFullPath stringByAppendingPathComponent:dir];
+
     [self swiftFileHandleWithPath:path];
     
      NSLog(@"%@文件写入成功\n",fileName);

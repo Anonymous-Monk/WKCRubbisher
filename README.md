@@ -1,6 +1,7 @@
 # SLCMixTool
 
 iOS 代码混淆:
+
 1.生成垃圾文件和内部属性及函数.
 2.在已有文件内增加垃圾函数
 
@@ -39,4 +40,4 @@ mix.childMethodNum = 10;
 [mix fireOnChild];
 ```
 
-
+### 版本 1.1 添加了swift的混淆代码和函数.
