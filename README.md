@@ -84,3 +84,16 @@ $target = $project.targets.first # 目标target
 2. 运行
 `$ cd  脚本所在目录`
 `$ ruby RenameClass.rb` 
+
+### 版本 1.3 添加SLCResourceMapper
+资源处理
+1. 资源重命名.
+没有改变资源外部使用名称,改变了资源本地名和引用名.
+2. 简单压缩.  - 更改图片的字节数.
+```
+SLCResourceMapper *mapper = [SLCResourceMapper new];
+mapper.projectFullPath = @"/Users/weikunchao/Desktop/ffff";
+mapper.versionNumber = 1;
+[mapper fireOn];
+```
+
