@@ -58,7 +58,7 @@
 - (void)writeImageWithName:(NSString *)name
 {
     NSString * userPath = NSSearchPathForDirectoriesInDomains(NSDesktopDirectory, NSUserDomainMask, YES).lastObject;
-    userPath = [[userPath stringByAppendingPathComponent:@"SLCBornMixResource"] stringByAppendingPathComponent:@"pictures"];
+    userPath = [[_projectLocation ? : userPath stringByAppendingPathComponent:@"SLCBornMixResource"] stringByAppendingPathComponent:@"pictures"];
     
     NSString * picturePath = [userPath stringByAppendingPathComponent:name];
     

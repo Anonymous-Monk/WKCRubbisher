@@ -99,6 +99,7 @@ mapper.versionNumber = 1;
 
 ### 版本 1.4 添加SLCBornMixResource
 生成混淆资源文件(以bundle形式,默认在桌面).
+注:如果不指定projectLocation,需要把工程文件放置在桌面.
 ```
 SLCMixResource * mixR = [[SLCMixResource alloc] init];
 //        mixR.maxCount = 100; //图片个数
