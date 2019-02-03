@@ -97,3 +97,12 @@ mapper.versionNumber = 1;
 [mapper fireOn];
 ```
 
+### 版本 1.4 添加SLCBornMixResource
+生成混淆资源文件(以bundle形式,默认在桌面).
+```
+SLCMixResource * mixR = [[SLCMixResource alloc] init];
+//        mixR.maxCount = 100; //图片个数
+[mixR beginMix];
+
+```
+
