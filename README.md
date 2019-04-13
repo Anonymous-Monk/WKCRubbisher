@@ -1,6 +1,7 @@
-# SLCMixTool
+# WKCRubbisher
 
-iOS 代码混淆:
+
+iOS 代码混淆: ( 作用自己体会......)
 
 1.生成垃圾文件和内部属性及函数.
 2.在已有文件内增加垃圾函数
@@ -10,11 +11,9 @@ iOS 代码混淆:
 
 在执行文件`main.m`内修改变量.
 ```
-SLCMixManager *mix = [SLCMixManager new];
-mix.fileHeader = @"SQZ"; //header
-mix.fileName = @"QuizProject"; //文件夹名称
-mix.fileNum = 150; //文件个数
-[mix fireOnBorn];
+WKCRubbisherManager * rubbisher = [WKCRubbisherManager new];
+rubbisher.projectType = WKCProjectTypeSwift;
+[rubbisher startRubbish];
 ```
 
 2. 执行
@@ -22,28 +21,24 @@ mix.fileNum = 150; //文件个数
 
 3. 调用
 代码拉进项目(或设置路径直接在工程生成)后,有一个默认调用类.
-`#import "设置的fileHeader + Bullets.h"`,例如`#import "SQZBullets.h"`.
+`#import "WKCRubbisher.h"`
 
 所有的类会生成一个对象,并且简单操作其内的属性和方法,执行完成后会立即被释放.
 ```
-[SQZBullets fire];
+[WKCRubbisher fire];
 ```
 
 ##  在已有文件内增加垃圾函数
 1. 调用 
 在`main.m`内调用
 ```
-SLCMixManager *mix = [SLCMixManager new];
-mix.childFullPath = @"/Users/weikunchao/Desktop/aa";
-mix.contaisArray = @[@"SLCmixLayout"];
-mix.childMethodNum = 10;
-[mix fireOnChild];
+WKCRubbisherSteper * steper = [[WKCRubbisherSteper alloc] init];
+steper.projectType = WKCProjectTypeSwift;
+steper.projectFullPath = @"此处写入你的项目全路径(直接文件夹拖到这即可)";
+[steper startRubbish];
 ```
 
-### 版本 1.1 添加了swift的混淆代码和函数.
-
-### 版本 1.2 添加SLCRename - 文件前缀重命名(OC或swift均可以)
-
+##  文件前缀重命名
 #### 原理
 
 1. 去除不操作的文件类型.
@@ -85,7 +80,8 @@ $target = $project.targets.first # 目标target
 `$ cd  脚本所在目录`
 `$ ruby RenameClass.rb` 
 
-### 版本 1.3 添加SLCResourceMapper
+
+### Assets.xcassets内的资源文件重命名.
 资源处理
 1. 资源重命名.
 没有改变资源外部使用名称,改变了资源本地名和引用名.
@@ -97,7 +93,7 @@ mapper.versionNumber = 1;
 [mapper fireOn];
 ```
 
-### 版本 1.4 添加SLCBornMixResource
+### 生成混淆资源文件
 生成混淆资源文件(以bundle形式,默认在桌面).
 注:如果不指定projectLocation,需要把工程文件放置在桌面.
 ```
@@ -107,3 +103,13 @@ SLCMixResource * mixR = [[SLCMixResource alloc] init];
 
 ```
 
+## 版本记录
+### 版本 1.1 添加了swift的混淆代码和函数.
+### 版本 1.2 添加SLCRename - 文件前缀重命名(OC或swift均可以).
+### 版本 1.3 添加SLCResourceMapper.
+### 版本 1.4 添加SLCBornMixResource.
+
+## 版本2.0 更名WKCRubbisher
+整体优化大改版,  代码可读性更强. 生成的属性或方法更多,排版更强.
+
+WKCRubbisher 取代了原来的 SLCMixManager.
