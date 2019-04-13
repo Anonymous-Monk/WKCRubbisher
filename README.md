@@ -16,7 +16,7 @@ You can change some prarms you want in the class.
 @param filePrefix -> filePrefix
 @param method startRubbish to start.
 mark: There will be a WKCRubbisher class, which has a class method fire, which will automatically call all the methods in the useless class.
-```
+```swift
 WKCRubbisherManager * rubbisher = [WKCRubbisherManager new];
 rubbisher.projectType = WKCProjectTypeSwift;
 [rubbisher startRubbish];
@@ -29,7 +29,7 @@ After all the files created, there is a claa named WKCRubbisher, when you run [W
 
 it is achieved by adding classification (the classification declaration and implementation are hidden, and the outside is inaccessible)
 Use as above.
-```
+```swift
 WKCRubbisherSteper * steper = [[WKCRubbisherSteper alloc] init];
 steper.projectType = WKCProjectTypeSwift;
 steper.projectFullPath = @"your project fullPath";
@@ -42,7 +42,7 @@ steper.projectFullPath = @"your project fullPath";
 
 For example` [UIImage imageNamed: @"testImage"];`,  The actual name becomes testImage_wkcMapper after the change, but the actual reference name is still testImage, which is still` [UIImage imageNamed: @"testImage"];` use. Does not change the original change. And in the process of changing the hair will simply compress the 0.98 scale and change the size of the source image.
 
-```
+```swift
 WKCResourceMapper * mapper = [[WKCResourceMapper alloc] init];
 mapper.projectFullPath = @"your project fullPath";
 [mapper startMapper];
@@ -55,7 +55,7 @@ mapper.projectFullPath = @"your project fullPath";
 Create obfuscated resources (desktop).
 mark : @param thisScriptFullPath is needed.
 
-```
+```swift
 WKCResouceBorner * resourceBorner = [[WKCResouceBorner alloc] init];
 resourceBorner.thisScriptFullPath = @"this script fullPath";
 [resourceBorner startBorn];
@@ -86,7 +86,7 @@ iOS 代码混淆: ( 作用自己体会......)
 参数 调用方法startRubbish 开始.
 
 在执行文件`main.m`内修改变量.
-```
+```swift
 WKCRubbisherManager * rubbisher = [WKCRubbisherManager new];
 rubbisher.projectType = WKCProjectTypeSwift;
 [rubbisher startRubbish];
@@ -104,7 +104,7 @@ rubbisher.projectType = WKCProjectTypeSwift;
 通过添加分类的方式实现(分类声明和实现均隐藏,外部无法访问)
 1. 调用 
 在`main.m`内调用
-```
+```swift
 WKCRubbisherSteper * steper = [[WKCRubbisherSteper alloc] init];
 steper.projectType = WKCProjectTypeSwift;
 steper.projectFullPath = @"此处写入你的项目全路径(直接文件夹拖到这即可)";
@@ -116,7 +116,7 @@ steper.projectFullPath = @"此处写入你的项目全路径(直接文件夹拖�
 1. 资源重命名.
 没有改变资源外部使用名称,改变了资源本地名和引用名.
 2. 简单压缩.  - 更改图片的字节数.
-```
+```swift
 WKCResourceMapper * mapper = [[WKCResourceMapper alloc] init];
 mapper.projectFullPath = @"这里填入你的工程地址";
 [mapper startMapper];
@@ -125,7 +125,7 @@ mapper.projectFullPath = @"这里填入你的工程地址";
 ## 混淆资源
 生成混淆资源文件(以bundle形式,默认在桌面).
 注: 参数thisScriptFullPath必须设置(脚本放置位置).
-```
+```swift
 WKCResouceBorner * resourceBorner = [[WKCResouceBorner alloc] init];
 resourceBorner.thisScriptFullPath = @"this script fullPath";
 [resourceBorner startBorn];
