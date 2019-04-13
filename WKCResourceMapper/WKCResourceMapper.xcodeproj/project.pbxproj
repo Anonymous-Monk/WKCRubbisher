@@ -10,6 +10,7 @@
 		91F1DC8E22621183004875FE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 91F1DC8D22621183004875FE /* main.m */; };
 		91F1DC962262120D004875FE /* WKCResourceMapper.m in Sources */ = {isa = PBXBuildFile; fileRef = 91F1DC952262120D004875FE /* WKCResourceMapper.m */; };
 		91F1DC99226212C6004875FE /* WKCResourceFiler.m in Sources */ = {isa = PBXBuildFile; fileRef = 91F1DC98226212C6004875FE /* WKCResourceFiler.m */; };
+		91F1DC9C226240E5004875FE /* WKCResouceBorner.m in Sources */ = {isa = PBXBuildFile; fileRef = 91F1DC9B226240E5004875FE /* WKCResouceBorner.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -31,6 +32,8 @@
 		91F1DC952262120D004875FE /* WKCResourceMapper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WKCResourceMapper.m; sourceTree = "<group>"; };
 		91F1DC97226212C6004875FE /* WKCResourceFiler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WKCResourceFiler.h; sourceTree = "<group>"; };
 		91F1DC98226212C6004875FE /* WKCResourceFiler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WKCResourceFiler.m; sourceTree = "<group>"; };
+		91F1DC9A226240E5004875FE /* WKCResouceBorner.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WKCResouceBorner.h; sourceTree = "<group>"; };
+		91F1DC9B226240E5004875FE /* WKCResouceBorner.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WKCResouceBorner.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +70,8 @@
 				91F1DC98226212C6004875FE /* WKCResourceFiler.m */,
 				91F1DC942262120D004875FE /* WKCResourceMapper.h */,
 				91F1DC952262120D004875FE /* WKCResourceMapper.m */,
+				91F1DC9A226240E5004875FE /* WKCResouceBorner.h */,
+				91F1DC9B226240E5004875FE /* WKCResouceBorner.m */,
 				91F1DC8D22621183004875FE /* main.m */,
 			);
 			path = WKCResourceMapper;
@@ -128,6 +133,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				91F1DC9C226240E5004875FE /* WKCResouceBorner.m in Sources */,
 				91F1DC962262120D004875FE /* WKCResourceMapper.m in Sources */,
 				91F1DC99226212C6004875FE /* WKCResourceFiler.m in Sources */,
 				91F1DC8E22621183004875FE /* main.m in Sources */,

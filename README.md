@@ -50,7 +50,18 @@ mapper.projectFullPath = @"your project fullPath";
 ![Alt text](https://github.com/WeiKunChao/WKCRubbisher/raw/master/screenShort/resourceMapper.png).
 
 
+## Garbage Resources
 
+Create obfuscated resources (desktop).
+mark : @param thisScriptFullPath is needed.
+
+```
+WKCResouceBorner * resourceBorner = [[WKCResouceBorner alloc] init];
+resourceBorner.thisScriptFullPath = @"this script fullPath";
+[resourceBorner startBorn];
+```
+
+![Alt text](https://github.com/WeiKunChao/WKCRubbisher/raw/master/screenShort/resources.png).
 
 
 
@@ -113,12 +124,11 @@ mapper.projectFullPath = @"这里填入你的工程地址";
 
 ## 混淆资源
 生成混淆资源文件(以bundle形式,默认在桌面).
-注:如果不指定projectLocation,需要把工程文件放置在桌面.
+注: 参数thisScriptFullPath必须设置(脚本放置位置).
 ```
-SLCMixResource * mixR = [[SLCMixResource alloc] init];
-//        mixR.maxCount = 100; //图片个数
-[mixR beginMix];
-
+WKCResouceBorner * resourceBorner = [[WKCResouceBorner alloc] init];
+resourceBorner.thisScriptFullPath = @"this script fullPath";
+[resourceBorner startBorn];
 ```
 
 ## 版本记录
@@ -128,7 +138,7 @@ SLCMixResource * mixR = [[SLCMixResource alloc] init];
 
 ## 版本2.0 更名WKCRubbisher
 整体优化大改版,  代码可读性更强. 生成的属性或方法更多,排版更强.
-
-WKCRubbisher 取代了原来的 SLCMixManager.
-WKCResourceMapper  替换SLCResourceMapper.
+1. WKCRubbisher 取代了原来的 SLCMixManager.
+2. WKCResourceMapper  替换SLCResourceMapper.
+3. WKCResouceBorner 替换SLCBornMixResource.
 
