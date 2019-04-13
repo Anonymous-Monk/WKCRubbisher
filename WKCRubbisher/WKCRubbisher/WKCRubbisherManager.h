@@ -6,13 +6,21 @@
 //  Copyright © 2019 SecretLisa. All rights reserved.
 //
 //  本类作用: 生成n个无用的文件
-//  (1)projectType -> 项目类型,OC还是swift
-//  (2)filesCount -> 文件总个数.
-//  (3)filePrefix -> 自定义所有文件的前缀名称
-//  (4)调用方法startRubbish 开始.
+//  @param projectType -> 项目类型,OC还是swift
+//  @param filesCount -> 文件总个数.
+//  @param filePrefix -> 自定义所有文件的前缀名称
+//  @param 调用方法startRubbish 开始.
 //
 //
 //  注: 文件中会有一个WKCRubbisher类,其内有类方法fire,调用时会主动将所有无用类内的方法全部都调用一遍
+
+//  create useless files
+//  @param projectType -> OC or Swift
+//  @param filesCount -> file total counts
+//  @param filePrefix -> filePrefix
+//  @param method startRubbish to start.
+// mark: There will be a WKCRubbisher class, which has a class method fire, which will automatically call all the methods in the useless class.
+
 ///////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////

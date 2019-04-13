@@ -10,6 +10,9 @@
 //
 //
 //  注: 为减轻与源文件的耦合性,是通过添加分类的方式实现(分类声明和实现均隐藏,外部无法访问).
+//
+//  Insert some useless methods or classes into the existing classes of the project.
+//  mark: In order to reduce the coupling with the source file, it is achieved by adding classification (the classification declaration and implementation are hidden, and the outside is inaccessible).
 
 #import <Foundation/Foundation.h>
 #import "WKCRubbisherFiler.h"

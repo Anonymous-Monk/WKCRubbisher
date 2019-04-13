@@ -15,13 +15,13 @@ int main(int argc, const char * argv[])
     @autoreleasepool
     {
         WKCRubbisherManager * rubbisher = [WKCRubbisherManager new];
-        rubbisher.projectType = WKCProjectTypeSwift;
+        rubbisher.projectType = WKCProjectTypeObjectC;
         [rubbisher startRubbish];
         
-        WKCRubbisherSteper * steper = [[WKCRubbisherSteper alloc] init];
-        steper.projectType = WKCProjectTypeSwift;
-        steper.projectFullPath = @"此处写入你的项目全路径(直接文件夹拖到这即可)";
-        [steper startRubbish];
+//        WKCRubbisherSteper * steper = [[WKCRubbisherSteper alloc] init];
+//        steper.projectType = WKCProjectTypeSwift;
+//        steper.projectFullPath = @"/Users/weikunchao/Desktop/SWIFTtest 2";
+//        [steper startRubbish];
     }
     return 0;
 }
