@@ -21,7 +21,7 @@ WKCRubbisherManager * rubbisher = [WKCRubbisherManager new];
 rubbisher.projectType = WKCProjectTypeSwift;
 [rubbisher startRubbish];
 ```
-After all the files created, there is a claa named WKCRubbisher, when you run [WKCRubbisher fire], all the garbage file's method are taking to run.
+After all the files created, there is a class named WKCRubbisher, when you run [WKCRubbisher fire], all the garbage file's method are taking to run.
 
 ![Alt text](https://github.com/WeiKunChao/WKCRubbisher/raw/master/screenShort/rubbisher.png).
 
